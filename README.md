@@ -1,6 +1,6 @@
 # PZone
 
-A Django web project using Python 2.7 and MySQL 5
+A Online Original Photography Community Django Web Project using Python 2.7 and MySQL 5
 
 ## How Can I set it up
 
