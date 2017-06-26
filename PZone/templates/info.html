@@ -1,0 +1,158 @@
+{% extends 'includes/base.html' %}
+{% block title %}个人中心 {% endblock %}
+{% block content %}
+    <!--内容-->
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <div class="client-center">
+                    <div class="center-left">
+                        <ul>
+                            <li class="center-li"><a href="{% url 'user_index' %}">个 人 首 页</a></li>
+                            <li class="center-li"><a href="{% url 'user_message' %}">我 的 消 息</a></li>
+                            <li class="center-li"><a href="{% url 'user_post' %}">以 往 发 布</a></li>
+                            <li class="center-li"><a href="{% url 'site_post' %}">新&nbsp;&nbsp;&nbsp;发&nbsp;&nbsp;&nbsp;布</a>
+                            </li>
+                            <li class="center-li active"><a href="{% url 'user_info' %}">个 人 资 料</a></li>
+                            <li class="center-li"><a href="{% url 'site_logout' 'site_index' %}">退&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="center-right">
+                        {#                        <form action="##" method="post">#}
+                        <div class="info-container">
+                            <div class="info-item-box">
+                                <div class="info-item">
+                                    <label>用&nbsp;&nbsp;户&nbsp;&nbsp;ID</label>
+                                    <input type="text" name="userid" id="info-item-userid" disabled="disabled"
+                                           value="{{ obj.id }}"/>
+                                </div>
+                                <div class="info-item">
+                                    <label>用&nbsp;&nbsp;户&nbsp;&nbsp;名</label>
+                                    <input type="text" name="username" id="info-item-username" disabled="disabled"
+                                           value="{{ obj.name }}"/>
+                                </div>
+                                <form id="form-info" action="{% url 'avatar_upload' %}" method="post">
+                                    <div class="info-item">
+                                        <label>用户密码</label>
+                                        <input type="password" name="password" id="info-item-password" value=""/>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>确认密码</label>
+                                        <input type="password" name="password2" id="info-item-password2" value=""/>
+                                    </div>
+                                    <div class="info-item info-item-desp">
+                                        <label id="info-item-description">个性签名</label>
+                                        <textarea id="info-desp" name="description" rows="5"
+                                                  cols="2">{{ obj.desp }}</textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="info-item-box">
+                                <div class="info-item-img">
+                                    <img id="info-img" src="{{ obj.ava }}"/>
+                                </div>
+                                <script>
+                                    function user_avatar() {
+                                        $('#user-avatar').trigger("click")
+                                    }
+                                    function user_info() {
+                                        var pwd = $('#info-item-password').val();
+                                        var pwd2 = $('#info-item-password2').val();
+                                        var desp = document.getElementById('info-desp').value;
+                                        if (pwd.trim().length <= 0 || pwd2.trim().length <= 0) {
+                                            var $html = "<div id='mask'><div class='pop-box'><div class='card'>" +
+                                                    "<div class='card-content'><label class='pop-box-input'>" +
+                                                    "密码不能为空，请重试！</label><button class='button pop-box-button' " +
+                                                    "style='width: 30%;' onclick='Pop_box_hide()'>确定</button>" +
+                                                    "</div></div></div></div>";
+                                            $('body').prepend($html);
+                                            Pop_box_show();
+                                            return false;
+                                        } else if (pwd.trim().length < 6 || pwd.trim().length > 16 || pwd2.trim().length < 6 || pwd2.trim().length > 16) {
+                                            var $html = "<div id='mask'><div class='pop-box'><div class='card'>" +
+                                                    "<div class='card-content'><label class='pop-box-input'>" +
+                                                    "密码长度有误，请重试！</label><button class='button pop-box-button' " +
+                                                    "style='width: 30%;' onclick='Pop_box_hide()'>确定</button>" +
+                                                    "</div></div></div></div>";
+                                            $('body').prepend($html);
+                                            Pop_box_show();
+                                            return false;
+                                        } else if (pwd != pwd2) {
+                                            var $html = "<div id='mask'><div class='pop-box'><div class='card'>" +
+                                                    "<div class='card-content'><label class='pop-box-input'>" +
+                                                    "密码输入有误，请重试！</label><button class='button pop-box-button' " +
+                                                    "style='width: 30%;' onclick='Pop_box_hide()'>确定</button>" +
+                                                    "</div></div></div></div>";
+                                            $('body').prepend($html);
+                                            Pop_box_show();
+                                            return false;
+                                        } else if (pwd == pwd2) {
+                                            $.ajax({
+                                                cache: true,
+                                                type: "POST",
+                                                url: "{% url 'info_update' %}",
+                                                data: {'password': pwd, 'password2': pwd2, 'description': desp},
+                                                async: false,
+                                                success: function (data) {
+                                                    var $html = "<div id='mask'><div class='pop-box'><div class='card'>" +
+                                                            "<div class='card-content'><label class='pop-box-input'>" +
+                                                            "资料已更新！</label></div></div></div></div>";
+                                                    $('body').prepend($html);
+                                                    Pop_box_show();
+                                                    $("#info-desp").text(data)
+                                                    $('#info-item-password').val("");
+                                                    $('#info-item-password2').val("");
+                                                    setTimeout(Pop_box_hide, 2000);
+                                                }
+                                            });
+                                        }
+                                    }
+                                    $(document).ready(function () {
+                                        $('#user-avatar').change(function () {
+                                            $("#form-img").ajaxSubmit();
+                                            update_img();
+                                        })
+                                        function update_img() {
+                                            if (getCookie("img") == null) {
+                                                setTimeout(update_img(), 1000)
+                                            } else {
+                                                var str = getCookie("img").replace("\"", "").slice(0, -1);
+                                                $("#info-img").attr("src", str);
+                                                {#                                                setTimeout(delCookie("img"), 1000)#}
+                                                $.ajax({
+                                                    cache: true,
+                                                    type: "POST",
+                                                    url: "{% url 'get_del_cookies' "img" %}",
+                                                    data: {},
+                                                    async: false,
+                                                    success: function (data) {
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    })
+                                </script>
+                                <div class="info-item-img">
+                                    <form id="form-img" action="{% url 'avatar_upload' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="file" name="pic" style="display: none" id="user-avatar">
+                                    </form>
+                                    <button class="button info-item-img-button" id="user-ava"
+                                            onclick="user_avatar()">更换头像
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button info-item-form-button" onclick="user_info()" type="submit">保存更改</button>
+                        {#                        </form>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block hidden_script %}
+
+{% endblock %}

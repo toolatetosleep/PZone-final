@@ -1,0 +1,93 @@
+{% extends 'includes/base.html' %}
+{% block title %}个人中心 {% endblock %}
+{% block content %}
+    <!--内容-->
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <div class="client-center">
+                    <div class="center-left">
+                        <ul>
+                            <li class="center-li"><a href="{% url 'user_index' %}">个 人 首 页</a></li>
+                            <li class="center-li active"><a href="{% url 'user_message' %}">我 的 消 息</a></li>
+                            <li class="center-li"><a href="{% url 'user_post' %}">以 往 发 布</a></li>
+                            <li class="center-li"><a href="{% url 'site_post' %}">新&nbsp;&nbsp;&nbsp;发&nbsp;&nbsp;&nbsp;布</a>
+                            </li>
+                            <li class="center-li"><a href="{% url 'user_info' %}">个 人 资 料</a></li>
+                            <li class="center-li"><a href="{% url 'site_logout' 'site_index' %}">退&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <script>
+                        function check_read(id, obj) {
+                            $.ajax({
+                                cache: true,
+                                type: "POST",
+                                url: "{% url 'mark_com_read' %}",
+                                data: {'id': parseInt(id)},
+                                async: false,
+                                success: function (data) {
+                                    if (parseInt(data) == 1) {
+                                        $(obj).parent().parent().parent().parent().slideUp()
+                                        $('#count_number').text(parseInt($('#count_number').text()) - 1)
+                                    }
+                                }
+                            });
+                        }
+                    </script>
+                    <div class="center-right">
+                        <div class="card-content">
+                            <span class="card-title">我的消息
+                                {% if count != 0 %}
+                                    (<span id="count_number">{{ count }}</span>)
+                                {% endif %}
+                            </span>
+                            {% if count == 0 %}
+                                <div style="text-align: center;margin: 50px;color: #ccc;">暂无新消息</div>
+                            {% else %}
+                                {% for foo in obj %}
+                                    <div class="letter-box-container">
+                                        <div class="letter-box">
+                                            <div class="letter-boxs letter-box-left">
+                                                <img src="{{ foo.ava }}"/>
+                                            </div>
+                                            <div class="letter-boxs letter-box-right">
+                                                <div class="letter-box-right-top letter-box-right-top-left">
+                                                    <a href="{% url 'user_other' foo.uid %}" class="letter-box-a">{{ foo.name }}</a>
+                                                </div>
+                                                <div class="letter-box-right-top letter-box-right-top-right">
+                                                    <a href="##" class="letter-box-a">{{ foo.time }}</a>
+                                                </div>
+                                                <div class="letter-box-right-mid">
+                                                    <p class="letter-box-p">{{ foo.con|striptags }}</p>
+                                                </div>
+                                                <div class="letter-box-right-btm">
+                                                    <a href="##" onclick="check_read({{ foo.id }}, this)"
+                                                       class="letter-box-a">已阅</a>
+                                                    <a href="
+                                                    {% if foo.cat == 1 %}
+                                                        {% url 'topic_detail' foo.item %}
+                                                    {% elif foo.cat == 2 %}
+                                                        {% url 'skill_detail' foo.item %}
+                                                    {% elif foo.cat == 3 %}
+                                                        {% url 'picture_detail' foo.item %}
+                                                    {% elif foo.cat == 4 %}
+                                                        {% url 'equipment_detail' foo.item %}
+                                                    {% endif %}
+                                                    " class="letter-box-a">回复</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block hidden_script %}
+
+{% endblock %}

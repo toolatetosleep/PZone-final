@@ -1,0 +1,38 @@
+<header>
+    <nav class="nav">
+        <a href="{% url 'site_index' %}"><span id="index-title">PZone</span></a>
+        <ul class="ul-left">
+            <li class="li-left"><a href="{% url 'topic_first' %}">摄影头条</a></li>
+            <li class="li-left"><a href="{% url 'picture_first' %}">佳作欣赏</a></li>
+            <li class="li-left"><a href="{% url 'skill_first' %}">摄影技巧</a></li>
+            <li class="li-left"><a href="{% url 'equipment_first' %}">摄影器材</a></li>
+        </ul>
+        <ul class="ul-right">
+            <!--<li class="li-right"><a href="#">登陆/注册</a></li>-->
+            <form id="asd54d" class="li-right" action="##">
+                <input type="text" id="header-form" placeholder="Search">
+            </form>
+        </ul>
+    </nav>
+    <div class="bar1"></div>
+</header>
+<script>
+    $(document).ready(function () {
+        $('#asd54d').submit(function () {
+            if ($('#header-form').val().trim().length > 0) {
+                search_all()
+            }
+            return false
+        })
+    })
+    function search_all() {
+        var para = $('#header-form').val();
+        var $url = "{% url 'search_first' 5 %}";
+        var $url_list = $url.split("/");
+        $url_list.pop();
+        $url_list.push(para);
+        {#        alert($url_list.join("/"));#}
+        self.location = $url_list.join("/");
+        return false;
+    }
+</script>

@@ -1,0 +1,111 @@
+{% extends 'includes/base.html' %}
+{% block title %}{{ site_title }} {% endblock %}
+{% block hidden_elements %}
+    <div id="mask1" class="reg-form-user-mark">
+        <!--<div class="loader-inner square-spin myloader">
+            <div></div>
+        </div>-->
+        <div class="pop-box">
+            <div class="card">
+                <div class="card-content">
+                    <input id="ajax_user_url" type="hidden" value="{% url 'ajax_user_check' %}">
+                    <form action="{% url 'site_login' request.path %}" id="login_form" method="post">
+                        {% csrf_token %}
+                        <label class="pop-box-input">注册 / 登陆</label>
+                        <input type="text" class="pop-box-input2" id="id_username" name="username" placeholder="用 户 名" value=""/>
+                        <input type="password" class="pop-box-input2" id="id_password" name="password" placeholder="密      码" value=""/>
+                        <button type="submit" class="button pop-box-button" id="id_button">确定</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <!--内容-->
+    <div class="container">
+        <article>
+            {% for foo in obj %}
+                <section>
+                    <div class="card">
+                        {% if foo.url != "1" %}
+                            <div class="card-image">
+                                {% if cat == 1 or foo.cat == 1 %}
+                                    <a href="{% url 'topic_detail' foo.id %}"><img src="{{ foo.url }}"></a>
+                                {% elif cat == 2 or foo.cat == 2 %}
+                                    <a href="{% url 'skill_detail' foo.id %}"><img src="{{ foo.url }}"></a>
+                                {% elif cat == 3 or foo.cat == 3 %}
+                                    <a href="{% url 'picture_detail' foo.id %}"><img src="{{ foo.url }}"></a>
+                                {% elif cat == 4 or foo.cat == 4 %}
+                                    <a href="{% url 'equipment_detail' foo.id %}"><img src="{{ foo.url }}"></a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <div class="card-content">
+                            <span class="card-title">
+                                {% if cat == 1 or foo.cat == 1 %}
+                                    <a href="{% url 'topic_detail' foo.id %}"
+                                       class="card-title-a">{{ foo.title|truncatechars:30 }}</a>
+                                {% elif cat == 2 or foo.cat == 2 %}
+                                    <a href="{% url 'skill_detail' foo.id %}"
+                                       class="card-title-a">{{ foo.title|truncatechars:30 }}</a>
+                                {% elif cat == 3 or foo.cat == 3 %}
+                                    <a href="{% url 'picture_detail' foo.id %}"
+                                       class="card-title-a">{{ foo.title|truncatechars:30 }}</a>
+                                {% elif cat == 4 or foo.cat == 4 %}
+                                    <a href="{% url 'equipment_detail' foo.id %}"
+                                       class="card-title-a">{{ foo.title|truncatechars:30 }}</a>
+                                {% endif %}
+                            </span>
+                            <p>{{ foo.content|striptags|truncatechars:200|safe }}</p>
+                        </div>
+                        <div class="card-action">
+                            <a>{{ foo.time }}</a>
+                            <a>浏览({{ foo.read }})</a>
+                            {% if cat == 1 or foo.cat == 1 %}
+                                <a href="{% url 'topic_detail' foo.id %}">支持({{ foo.thumb }})</a>
+                                {% if foo.com_num == 0 %}
+                                    <a>暂无评论</a>
+                                {% else %}
+                                    <a href="{% url 'topic_detail' foo.id %}">回复({{ foo.com_num }})</a>
+                                {% endif %}
+                            {% elif cat == 2 or foo.cat == 2 %}
+                                <a href="{% url 'skill_detail' foo.id %}">支持({{ foo.thumb }})</a>
+                                {% if foo.com_num == 0 %}
+                                    <a>暂无评论</a>
+                                {% else %}
+                                    <a href="{% url 'skill_detail' foo.id %}">回复({{ foo.com_num }})</a>
+                                {% endif %}
+                            {% elif cat == 3 or foo.cat == 3 %}
+                                <a href="{% url 'picture_detail' foo.id %}">支持({{ foo.thumb }})</a>
+                                {% if foo.com_num == 0 %}
+                                    <a>暂无评论</a>
+                                {% else %}
+                                    <a href="{% url 'picture_detail' foo.id %}">回复({{ foo.com_num }})</a>
+                                {% endif %}
+                            {% elif cat == 4 or foo.cat == 4 %}
+                                <a href="{% url 'equipment_detail' foo.id %}">支持({{ foo.thumb }})</a>
+                                {% if foo.com_num == 0 %}
+                                    <a>暂无评论</a>
+                                {% else %}
+                                    <a href="{% url 'equipment_detail' foo.id %}">回复({{ foo.com_num }})</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        {% if forloop.last %}
+                            {% if page_all <= 1 %}
+
+                            {% else %}
+                                {% include 'includes/pagination.html' %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </section>
+            {% endfor %}
+        </article>
+        {% include 'includes/aside.html' %}
+    </div>
+{% endblock %}
+{% block hidden_script %}
+
+{% endblock %}

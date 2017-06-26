@@ -1,0 +1,118 @@
+@charset "utf-8";
+
+/*以往发布、动态、其他列表*************************************************************/
+
+.post-box-container {
+    margin: 5px;
+    /*width: 700px;*/
+    /*height: auto;*/
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    border-radius: 4px;
+}
+
+.post-box-li {
+    margin: 0;
+    padding: 0;
+    width: calc(25% - 4px);
+    height: 45px;
+    display: inline-block;
+    text-align: center;
+}
+
+.post-box-li > a {
+    display: inline-block;
+    color: #333;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    line-height: 40px;
+}
+
+.post-box-tab {
+    padding: 0 0 3px 0;
+    display: none;
+}
+
+.post-box-tab-rows {
+    padding: 0 10px;
+}
+
+.post-box-tab-row {
+    padding: 8px 0;
+    border-bottom: rgba(160, 160, 160, 0.2) 1px solid;
+}
+
+.post-box-tab-row:last-child {
+    border-bottom: none;
+}
+
+.post-box-tab-row:hover {
+    background: #F5F5F5;
+}
+
+.post-box-tab-row p {
+    overflow: hidden;
+    zoom: 1;
+}
+
+.post-box-tab-row p a {
+    float: right;
+    margin: 0 7px;
+    color: #666 !important;
+    text-decoration: none;
+}
+
+.post-box-tab-item {
+    float: left !important;
+    color: #333 !important;
+}
+
+/*发布新项目*/
+
+.post-title {
+    height: 100px;
+    text-align: center;
+    padding: 30px;
+}
+
+.post-title input {
+    border: none;
+    width: 500px;
+    font-size: 1.3em;
+    text-align: center;
+    padding: 7px 20px;
+    border-bottom: 2px solid #CCC;
+    transition: all .4s ease-in-out;
+}
+
+.post-editer {
+    height: 430px;
+    padding: 0 50px;
+}
+
+.post-section {
+    height: 50px;
+    padding: 0 70px;
+}
+
+.post-section-block {
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+.post-section-block select {
+    width: 100px;
+    height: 30px;
+    font-size: 1.1em;
+    display: block;
+}
+
+.post-section-button {
+    padding: 4px;
+    margin: 0 0 20px 0;
+    width: 90px;
+    float: right;
+}
+
+/*以往发布、动态、其他列表   END ***************************************/

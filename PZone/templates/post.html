@@ -1,0 +1,268 @@
+{% extends 'includes/base.html' %}
+{% block title %}个人中心 {% endblock %}
+{% block content %}
+    <!--内容-->
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <div class="client-center">
+                    <div class="center-left">
+                        <ul>
+                            <li class="center-li"><a href="{% url 'user_index' %}">个 人 首 页</a></li>
+                            <li class="center-li"><a href="{% url 'user_message' %}">我 的 消 息</a></li>
+                            <li class="center-li active"><a href="{% url 'user_post' %}">以 往 发 布</a></li>
+                            <li class="center-li"><a href="{% url 'site_post' %}">新&nbsp;&nbsp;&nbsp;发&nbsp;&nbsp;&nbsp;布</a>
+                            </li>
+                            <li class="center-li"><a href="{% url 'user_info' %}">个 人 资 料</a></li>
+                            <li class="center-li"><a href="{% url 'site_logout' 'site_index' %}">退&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <script>
+                        var $centre_tab_cat = 1;
+                        var $cat;
+                        var p_topic = 2;
+                        var p_picture = 2;
+                        var p_skill = 2;
+                        var p_equip = 2;
+                        $(document).ready(function () {
+                            $(".post-box-li").mouseover(function () {
+                                var url = "{% url 'user_post_json' 1 1 %}"
+                                $cat = $(this).index() + 1;
+                                if ($cat != $centre_tab_cat) {
+                                    fetch_post_json($cat, 1);
+                                }
+                            }).click(function () {
+                                $centre_tab_cat = $cat;
+                                p_topic = 2;
+                                p_picture = 2;
+                                p_skill = 2;
+                                p_equip = 2;
+                                IsEndofArticle = true;
+                            });
+                        })
+
+                        $(window).scroll(function () {
+                            var st = $(this).scrollTop();
+                            var $_last_top45 = $(document).height();
+                            if ($_last_top45 - st <= 800) {
+                                on_sight_load_post();
+                            }
+                        });
+
+                        function on_sight_load_post() {
+                            var cat = $centre_tab_cat;
+                            var page = 0;
+                            if ($centre_tab_cat == 1) {
+                                page = p_topic;
+                                p_topic++;
+                            }
+                            if ($centre_tab_cat == 2) {
+                                page = p_picture;
+                                p_picture++;
+                            }
+                            if ($centre_tab_cat == 3) {
+                                page = p_skill;
+                                p_skill++;
+                            }
+                            if ($centre_tab_cat == 4) {
+                                page = p_equip;
+                                p_equip++;
+                            }
+                            fetch_post_next_json(cat, page);
+                        }
+
+                        var IsEndofArticle = true;
+                        function fetch_post_next_json(cat, page) {
+                            var $url = "{% url 'user_post_json' 1 1 %}";
+                            var $url_t = "{% url 'topic_detail' 1 %}";
+                            var $url_s = "{% url 'skill_detail' 1 %}";
+                            var $url_p = "{% url 'picture_detail' 1 %}";
+                            var $url_e = "{% url 'equipment_detail' 1 %}";
+                            var $url_list = $url.split("/");
+                            $url_list.pop();
+                            $url_list.pop();
+                            $url_list.push(cat);
+                            $url_list.push(page);
+                            var $url_new = $url_list.join("/");
+                            $.ajax({
+                                cache: true,
+                                type: "POST",
+                                url: $url_new,
+                                data: {},
+                                async: false,
+                                success: function (data) {
+                                    var a = cat - 1;
+                                    var tab = $(".post-box-tab").eq(a).children().first();
+                                    var ii = 0;
+                                    $.each(data, function (i, data) {
+                                        ii = i;
+                                    });
+                                    if (ii <= 0 && IsEndofArticle) {
+                                        tab.append("<div style=\"text-align: center;padding: 36px;height: 100px;color: #ccc;\">暂无更多内容</div>");
+                                        IsEndofArticle = false;
+                                    }
+                                    var $rows = "";
+                                    $.each(data, function (i, data) {
+                                        var $_html = "";
+                                        $_html += "<div class='post-box-tab-row'><p><a href='";
+                                        if (cat == 1) {
+                                            var $url_temp = $url_t.split("/");
+                                        } else if (cat == 2) {
+                                            var $url_temp = $url_p.split("/");
+                                        } else if (cat == 3) {
+                                            var $url_temp = $url_s.split("/");
+                                        } else if (cat == 4) {
+                                            var $url_temp = $url_e.split("/");
+                                        } else {
+                                            var $url_temp = ["##"];
+                                        }
+                                        $url_temp.pop();
+                                        $url_temp.push(data['id']);
+                                        $_html += $url_temp.join("/");
+                                        $_html += "' class='post-box-tab-item'>";
+                                        $_html += data['title'];
+                                        $_html += "</a><a style='width: 140px;'>";
+                                        $_html += data['time'];
+                                        $_html += "</a><a style='width: 70px;'>浏览(";
+                                        $_html += data['read'];
+                                        $_html += ")</a><a style='width: 70px;'>支持(";
+                                        $_html += data['thumb'];
+                                        $_html += ")</a><a style='width: 70px;'>回复(";
+                                        $_html += data['com_num'];
+                                        $_html += ")</a></p></div>";
+                                        $rows += $_html;
+                                        if (i == ii) {
+                                            $_page_this = parseInt(data['page_this']);
+                                            $_page_all = parseInt(data['page_all']);
+                                        }
+                                    });
+                                    tab.append($rows);
+                                }
+                            });
+                        }
+
+                        function fetch_post_json(cat, page) {
+                            var $url = "{% url 'user_post_json' 1 1 %}";
+                            var $url_t = "{% url 'topic_detail' 1 %}";
+                            var $url_s = "{% url 'skill_detail' 1 %}";
+                            var $url_p = "{% url 'picture_detail' 1 %}";
+                            var $url_e = "{% url 'equipment_detail' 1 %}";
+                            var $url_list = $url.split("/");
+                            $url_list.pop();
+                            $url_list.pop();
+                            $url_list.push(cat);
+                            $url_list.push(page);
+                            var $url_new = $url_list.join("/");
+                            $.ajax({
+                                cache: true,
+                                type: "POST",
+                                url: $url_new,
+                                data: {},
+                                async: false,
+                                success: function (data) {
+                                    var a = cat - 1;
+                                    var tab = $(".post-box-tab").eq(a);
+                                    {#                                    tab.children().first().remove();#}
+                                    tab.children().remove();
+                                    var ii = 0;
+                                    $.each(data, function (i, data) {
+                                        ii = i;
+                                    });
+                                    var $rows = "";
+                                    $rows = $rows + "<div class='post-box-tab-rows'>";
+                                    $.each(data, function (i, data) {
+                                        var $_html = "";
+                                        $_html += "<div class='post-box-tab-row'><p><a href='";
+                                        if (cat == 1) {
+                                            var $url_temp = $url_t.split("/");
+                                        } else if (cat == 2) {
+                                            var $url_temp = $url_p.split("/");
+                                        } else if (cat == 3) {
+                                            var $url_temp = $url_s.split("/");
+                                        } else if (cat == 4) {
+                                            var $url_temp = $url_e.split("/");
+                                        } else {
+                                            var $url_temp = ["##"];
+                                        }
+                                        $url_temp.pop();
+                                        $url_temp.push(data['id']);
+                                        $_html += $url_temp.join("/");
+                                        $_html += "' class='post-box-tab-item'>";
+                                        $_html += data['title'];
+                                        $_html += "</a><a style='width: 140px;'>";
+                                        $_html += data['time'];
+                                        $_html += "</a><a style='width: 70px;'>浏览(";
+                                        $_html += data['read'];
+                                        $_html += ")</a><a style='width: 70px;'>支持(";
+                                        $_html += data['thumb'];
+                                        $_html += ")</a><a style='width: 70px;'>回复(";
+                                        $_html += data['com_num'];
+                                        $_html += ")</a></p></div>";
+                                        $rows = $rows + $_html;
+                                        if (i == ii) {
+                                            $_page_this = parseInt(data['page_this']);
+                                            $_page_all = parseInt(data['page_all']);
+                                        }
+                                    });
+                                    $rows = $rows + "</div>";
+                                    tab.prepend($rows);
+                                    {#                                    pagination()#}
+                                }
+                            });
+                        }
+                    </script>
+
+                    <div class="center-right">
+                        <div class="post-box-container">
+                            <ul>
+                                <li class="post-box-li menu-li active"><a href="#">摄影头条</a></li>
+                                <li class="post-box-li menu-li"><a href="#">佳作欣赏</a></li>
+                                <li class="post-box-li menu-li"><a href="#">摄影技巧</a></li>
+                                <li class="post-box-li menu-li"><a href="#">摄影器材</a></li>
+                            </ul>
+                            <hr/>
+                            <div class="post-box-tab">
+                                <div class="post-box-tab-rows">
+                                    {% for foo in obj %}
+                                        <div class="post-box-tab-row">
+                                            <p>
+                                                <a href="{% url 'topic_detail' foo.id %}"
+                                                   class="post-box-tab-item">{{ foo.title }}</a>
+                                                <a style="width: 140px;">{{ foo.time }}</a>
+                                                <a style="width: 70px;">浏览({{ foo.read }})</a>
+                                                <a style="width: 70px;">支持({{ foo.thumb }})</a>
+                                                <a style="width: 70px;">回复({{ foo.com_num }})</a>
+                                            </p>
+                                        </div>
+                                    {% empty %}
+                                        <div style="text-align: center;padding: 36px;height: 100px;color: #ccc;">
+                                            暂无更多内容
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="post-box-tab">
+                                <div class="post-box-tab-rows">
+                                </div>
+                            </div>
+                            <div class="post-box-tab">
+                                <div class="post-box-tab-rows">
+                                </div>
+                            </div>
+                            <div class="post-box-tab">
+                                <div class="post-box-tab-rows">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block hidden_script %}
+
+{% endblock %}

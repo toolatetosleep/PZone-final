@@ -1,0 +1,80 @@
+{% extends 'includes/base.html' %}
+{% block title %}个人中心 {% endblock %}
+{% block content %}
+    <!--内容-->
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <div class="client-center">
+                    <div class="center-left">
+                        <ul>
+                            <li class="center-li active"><a href="{% url 'user_index' %}">个 人 首 页</a></li>
+                            <li class="center-li"><a href="{% url 'user_message' %}">我 的 消 息</a></li>
+                            <li class="center-li"><a href="{% url 'user_post' %}">以 往 发 布</a></li>
+                            <li class="center-li"><a href="{% url 'site_post' %}">新&nbsp;&nbsp;&nbsp;发&nbsp;&nbsp;&nbsp;布</a>
+                            </li>
+                            <li class="center-li"><a href="{% url 'user_info' %}">个 人 资 料</a></li>
+                            <li class="center-li"><a href="{% url 'site_logout' 'site_index' %}">退&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="center-right">
+                        <div class="center-top">
+                            <div class="center-top-pt">
+                                <img src="{{ u.ava }}"/>
+                            </div>
+                            <div class="center-top-dt">
+                                <p class="center-top-uname" style="width: 50%">{{ username }}</p>
+                                <p class="center-top-uid" style="width: 20%">ID: <i>{{ u.uid }}</i></p>
+                                <p class="center-top-ucredit" style="width: 20%">积分：{{ u.crd }}</p>
+                                {#                                <a class="center-top-sg hover-button" href="##">签到</a>#}
+                                {#                                <a class="center-top-sg in-disabled">已签到</a>#}
+                                <p class="center-top-desp"
+                                   style="width: 680px; height: 80px; overflow: hidden;">{{ u.dep }}</p>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="card-content">
+                            <span class="card-title">最新动态</span>
+                            <div class="post-box-tab">
+
+                                <div class="post-box-tab-rows">
+                                    {% for foo in obj %}
+                                        <div class="post-box-tab-row">
+                                            <p>
+                                                {% if foo.cat == 1 %}
+                                                    <a href="{% url 'topic_detail' foo.id %}"
+                                                       class="post-box-tab-item">{{ foo.title }}</a>
+                                                {% elif foo.cat == 2 %}
+                                                    <a href="{% url 'skill_detail' foo.id %}"
+                                                       class="post-box-tab-item">{{ foo.title }}</a>
+                                                {% elif foo.cat == 3 %}
+                                                    <a href="{% url 'picture_detail' foo.id %}"
+                                                       class="post-box-tab-item">{{ foo.title }}</a>
+                                                {% elif foo.cat == 4 %}
+                                                    <a href="{% url 'equipment_detail' foo.id %}"
+                                                       class="post-box-tab-item">{{ foo.title }}</a>
+                                                {% endif %}
+                                                <a style="width: 140px;">{{ foo.time }}</a>
+                                                <a style="width: 70px;">浏览({{ foo.read }})</a>
+                                                <a style="width: 70px;">支持({{ foo.thumb }})</a>
+                                                <a style="width: 70px;">回复({{ foo.com_num }})</a>
+                                            </p>
+                                        </div>
+                                    {% empty %}
+                                        <div style="text-align: center;padding: 36px;height: 100px;color: #ccc;">
+                                            暂无更多内容
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block hidden_script %}
+
+{% endblock %}

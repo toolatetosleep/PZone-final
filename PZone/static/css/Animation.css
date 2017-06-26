@@ -1,0 +1,116 @@
+@charset "utf-8";
+
+/*全站CSS动画*************************************************************/
+
+li.menu-li {
+	transition: background-color .5s;
+	position: relative;
+}
+
+li.menu-li:hover {
+	background: #F5F5F5;
+}
+
+.nav ul li {
+	transition: all .5s;
+}
+
+.nav ul li:hover {
+	color: #777;
+	/*box-shadow: 0 3px 2px #ccc;*/
+	/*transform: rotateY(360deg);*/
+}
+
+#header-form {
+	border: none;
+	padding: 5px 5px;
+	width: 53px;
+	border-bottom: 1px solid #CCC;
+	transition: border-bottom-width .2s ease-in-out, border-bottom-color .4s ease-in-out, width .4s ease-in-out, padding .1s ease-in-out;
+}
+
+#header-form:focus {
+	width: 200px;
+	padding: 5px 20px;
+	border-bottom: 2px solid #11c7eb;
+}
+
+
+/*全站CSS动画   END ***************************************/
+
+
+/*Pop-box动画*************************************************************/
+
+
+/*Pop-box动画   END ***************************************/
+
+
+/*加载动画*************************************************************/
+
+.myloader {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	top: 47%;
+	left: 47%;
+}
+
+@-webkit-keyframes square-spin {
+	25% {
+		-webkit-transform: perspective(100px) rotateX(180deg) rotateY(0);
+		transform: perspective(100px) rotateX(180deg) rotateY(0);
+		background: #fff;
+	}
+	50% {
+		-webkit-transform: perspective(100px) rotateX(180deg) rotateY(180deg);
+		transform: perspective(100px) rotateX(180deg) rotateY(180deg);
+		background: #11c7eb;
+	}
+	75% {
+		-webkit-transform: perspective(100px) rotateX(0) rotateY(180deg);
+		transform: perspective(100px) rotateX(0) rotateY(180deg);
+		background: #fff;
+	}
+	100% {
+		-webkit-transform: perspective(100px) rotateX(0) rotateY(0);
+		transform: perspective(100px) rotateX(0) rotateY(0);
+		background: #F06292;
+	}
+}
+
+@keyframes square-spin {
+	25% {
+		-webkit-transform: perspective(100px) rotateX(180deg) rotateY(0);
+		transform: perspective(100px) rotateX(180deg) rotateY(0);
+		background: #fff;
+	}
+	50% {
+		-webkit-transform: perspective(100px) rotateX(180deg) rotateY(180deg);
+		transform: perspective(100px) rotateX(180deg) rotateY(180deg);
+		background: #11c7eb;
+	}
+	75% {
+		-webkit-transform: perspective(100px) rotateX(0) rotateY(180deg);
+		transform: perspective(100px) rotateX(0) rotateY(180deg);
+		background: #fff;
+	}
+	100% {
+		-webkit-transform: perspective(100px) rotateX(0) rotateY(0);
+		transform: perspective(100px) rotateX(0) rotateY(0);
+		background: #F06292;
+	}
+}
+
+.square-spin > div {
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	width: 50px;
+	height: 50px;
+	border-radius: 3px;
+	background: #fff;
+	-webkit-animation: square-spin 3s 0s cubic-bezier(0.09, 0.57, 0.49, 0.9) infinite;
+	animation: square-spin 3s 0s cubic-bezier(0.09, 0.57, 0.49, 0.9) infinite;
+}
+
+
+/*加载动画   END ***************************************/

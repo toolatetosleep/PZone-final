@@ -1,0 +1,275 @@
+{% extends 'includes/base.html' %}
+{% block title %}{{ detail.a_kind }} {% endblock %}
+{% block hidden_elements %}
+    <div id="mask1" class="reg-form-user-mark">
+        <!--<div class="loader-inner square-spin myloader">
+            <div></div>
+        </div>-->
+        <div class="pop-box">
+            <div class="card">
+                <div class="card-content">
+                    <input id="ajax_user_url" type="hidden" value="{% url 'ajax_user_check' %}">
+                    <form action="{% url 'site_login' request.path %}" id="login_form" method="post">
+                        {% csrf_token %}
+                        <label class="pop-box-input">注册 / 登陆</label>
+                        <input type="text" class="pop-box-input2" id="id_username" name="username" placeholder="用 户 名" value=""/>
+                        <input type="password" class="pop-box-input2" id="id_password" name="password" placeholder="密      码" value=""/>
+                        <button type="submit" class="button pop-box-button" id="id_button">确定</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <!--内容-->
+    <div class="container">
+        <article>
+            <section>
+                <div class="card">
+                    <div class="card-action">
+                        <ul class="ul-Breadcrumbs">
+                            <li class="li-left">PZone</li>
+                            <li class="li-left">{{ detail.a_user }}</li>
+                            <li class="li-left">{{ detail.a_kind }}</li>
+                            <li class="li-left">{{ detail.a_title|truncatechars:30 }}</li>
+                        </ul>
+                    </div>
+                    <div class="card-content" id="article-content">
+                        <span class="card-title">{{ detail.a_title }}</span>
+                        {{ detail.a_content|safe }}
+                    </div>
+                    <div class="card-action">
+                        {% if detail.a_user == username %}
+                            <a style="color: #2196F3; cursor: pointer;" onclick="modify_article()">编辑</a>
+                            <a style="color: #F44336; cursor: pointer;" onclick="show_box_delete()">删除</a>
+                        {% endif %}
+                        <a>{{ detail.a_time }}</a>
+                        <a>浏览({{ detail.a_read }})</a>
+                        <a id="thumbup-123" style="cursor: pointer"
+                           onclick="thumbup({{ detail.a_cat }}, {{ detail.a_id }})">支持({{ detail.a_thumb }})</a>
+                        {% if detail.a_com == 0 %}
+                            <a>暂无评论</a>
+                        {% else %}
+                            <a>回复({{ detail.a_com }})</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+            <script>
+                $(document).ready(function () {
+
+                    // 评论区的加载
+                    on_sight_load();
+
+                    var str = "pzone{{ detail.a_cat }}{{ detail.a_id }}";
+                    var key = window.localStorage.getItem(str);
+                    if (key != null) {
+                        $('#thumbup-123').css("color", "#CCC");
+                    } else {
+                        $('#thumbup-123').css("color", "#0C96B3")
+                    }
+
+                    $('#article-content').find("img").after(
+                            '<button class="img-download" style="position: relative;' +
+                            'top: -30px;border: none;cursor: pointer; ' +
+                            'height: 25px; font-size: 17px; padding: 1px 5px;' +
+                            'background: rgba(255, 255, 255, 0.7);" ' +
+                            '" onclick="return false";>下载原图</button>');
+                    $('.img-download').click(function () {
+                        if (getCookie("username") != null) {
+                            var src = $(this).siblings().attr('src');
+                            var $url = "{% url 'site_download' 1 %}";
+                            // setCookie("file", src);
+                            var $url_list = $url.split("/");
+                            $url_list.pop();
+                            $url_list.push(src);
+                            var $url_new = $url_list.join("/");
+                            window.location = $url_new;
+                            // window.location = $url;
+                        } else {
+                            var $html = "<div id='mask'><div class='pop-box'><div class='card'>" +
+                                    "<div class='card-content'><label class='pop-box-input'>" +
+                                    "请先登录再进行下载</label><button class='button pop-box-button' " +
+                                    "style='width: 30%;' onclick='Pop_box_hide()'>确定</button>" +
+                                    "</div></div></div></div>";
+                            $('body').prepend($html);
+                            Pop_box_show();
+                        }
+                    })
+                })
+
+                var q = {{ detail.a_thumb }};
+
+                function show_box_delete() {
+                    var $html = "<div id='mask'><div class='pop-box'><div class='card'>" +
+                            "<div class='card-content'><label class='pop-box-input'>" +
+                            "确定删除？</label><button class='button pop-box-button' " +
+                            "style='width: 30%;' onclick='delete_article()'>确定</button>" +
+                            "<button class='button pop-box-button' style='width: 30%;' " +
+                            "onclick='Pop_box_hide()'>取消</button></div></div></div></div>";
+                    $('body').prepend($html);
+                    Pop_box_show();
+                }
+
+                function delete_article() {
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url: "{% url 'article_delete' detail.a_cat detail.a_id %}",
+                        data: {},
+                        async: false,
+                        success: function (data) {
+                            window.location = "{% url 'site_index' %}"
+                        }
+                    });
+                }
+
+                function modify_article() {
+                    window.location = "{% url 'article_modify' detail.a_cat detail.a_id %}"
+                }
+
+                function thumbup(a, b) {
+                    //var $a = a.toString();
+                    //var $b = b.toString();
+                    var str = "pzone" + a.toString() + b.toString();
+                    var key = window.localStorage.getItem(str);
+                    if (key != null) {
+                        $.ajax({
+                            cache: true,
+                            type: "POST",
+                            url: "{% url 'thumbup_ant' detail.a_cat detail.a_id %}",
+                            data: {},
+                            async: false,
+                            success: function (data) {
+                                window.localStorage.removeItem(str);
+                                $('#thumbup-123').css("color", "#0C96B3").text("支持(" + (parseInt(q) - 1) + ")");
+                                q--;
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            cache: true,
+                            type: "POST",
+                            url: "{% url 'thumbup_add' detail.a_cat detail.a_id %}",
+                            data: {},
+                            async: false,
+                            success: function (data) {
+                                window.localStorage.setItem(str, str);
+                                $('#thumbup-123').css("color", "#CCC").text("支持(" + (parseInt(q) + 1) + ")");
+                                q++;
+                            }
+                        });
+                    }
+                }
+            </script>
+            <section id="com_section" data="{% url 'site_com' detail.a_cat detail.a_id 1 %}">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">评论区</span>
+                        <div class="give-com" id="give-com">
+                            <div class="give-com-left">
+                                {% if username != None %}
+                                    <img src="{{ u.ava }}"/>
+                                {% else %}
+                                    <img src="/upload/init/avatar/default_avatar.jpg"/>
+                                {% endif %}
+                            </div>
+                            <div class="give-com-right">
+                                <div id="wang-editer" style="height: 130px;">
+                                </div>
+                            </div>
+                            {% if username == None %}
+                                <button onclick="comment_on()"
+                                        class="button give-com-button in-disabled" disabled="disabled">发表评论
+                                </button>
+                            {% else %}
+                                <button onclick="comment_on()"
+                                        class="button give-com-button">发表评论
+                                </button>
+                            {% endif %}
+                            <script>
+                                var $_get_uname_url = "{% url 'get_user_name' %}"
+                                //添加评论
+                                var c_rev = 0;
+                                var u_rev = {{ detail.u_id }};
+                                var u_rev_old = u_rev;
+                                function comment_on() {
+                                    var con = editor.$txt.html().replace($rep_span, "");
+                                    if (editor.$txt.formatText().replace($rep_span, "").trim().length > 0 || con.trim().length > 100) {
+                                        if (getCookie("name") != null) {
+                                            u_rev = parseInt(getCookie("name"));
+                                            delCookie("name");
+                                        }
+                                        if (getCookie("rev") != null) {
+                                            c_rev = parseInt(getCookie("rev"));
+                                            delCookie("rev");
+                                        }
+                                        var url = "{% url 'give_com' detail.a_cat detail.a_id %}"
+                                        $.ajax({
+                                            cache: true,
+                                            type: "POST",
+                                            url: url,
+                                            data: {'u_rev': u_rev, 'c_rev': c_rev, 'content': con},
+                                            async: false,
+                                            success: function (data) {
+                                                update_com($("#com_section").attr('data'));
+                                                reset();
+                                            }
+                                        });
+                                    } else {
+                                        var $html = "<div id='mask'><div class='pop-box'><div class='card'>" +
+                                                "<div class='card-content'><label class='pop-box-input'>" +
+                                                "评论内容不能为空！</label><button class='button pop-box-button' " +
+                                                "style='width: 30%;' onclick='Pop_box_hide()'>确定</button>" +
+                                                "</div></div></div></div>";
+                                        $('body').prepend($html);
+                                        Pop_box_show();
+                                    }
+                                }
+
+                                function reset() {
+                                    editor.clear();
+                                    $_com_id = 0;
+                                    u_rev = u_rev_old;
+                                    c_rev = 0;
+                                    delCookie("rev");
+                                    delCookie("name");
+                                }
+
+                                function page_href_com(para) {
+                                    var $url = "{% url 'del_com' 1 %}";
+                                    var $url_list = $url.split("/");
+                                    $url_list.pop();
+                                    $url_list.push(para);
+                                    var $url_new = $url_list.join("/");
+                                    $.post($url_new);
+                                    var $_block = $('.letter-box-container');
+                                    $_block.each(function () {
+                                        $(this).slideUp(500)
+                                    });
+                                    $_block.remove();
+                                    load_com($("#com_section"));
+                                }
+                            </script>
+                        </div>
+                        {% if page_all <= 1 %}
+
+                        {% else %}
+                            {% include 'includes/pagination2.html' %}
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </article>
+        {% include 'includes/aside.html' %}
+    </div>
+{% endblock %}
+{#{% block hidden_script %}#}
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{##}
+{#            $('#article-content').append("{{ detail.t_content|safe }}")#}
+{#        })#}
+{#    </script>#}
+{#{% endblock %}#}

@@ -1,0 +1,100 @@
+<script>
+    //首页
+    function page_href(para) {
+        var $url = "{{ request.path }}";
+        var $url_list = $url.split("/");
+        $url_list.pop();
+        $url_list.push(para);
+        var $url_new = $url_list.join("/");
+        window.location = $url_new;
+    }
+    $(document).ready(function () {
+        var $_btn_1 = 1;
+        var $_btn_2 = 2;
+        var $_btn_3 = 3;
+        var $_btn_4 = 4;
+        var $_btn_5 = 5;
+        var $_page_this = {{ page_this }};
+        var $_page_all = {{ page_all }};
+        var $_temp = $_page_all - $_page_this;
+        if ($_page_this <= 3) {
+            var $_btn_next = $_page_this + 1;
+            $('#bp').hide();
+            $('#b1').text("1").click(function(){page_href(1)});
+            $('#b2').text("2").click(function(){page_href(2)});
+            $('#b3').text("3").click(function(){page_href(3)});
+            $('#b4').text("4").click(function(){page_href(4)});
+            $('#b5').text("5").click(function(){page_href(5)});
+            $('#bn').click(function(){page_href($_btn_next)});
+        } else if ($_page_this > 3 && $_temp > 2) {
+            $_btn_1 = $_page_this - 2;
+            $_btn_2 = $_page_this - 1;
+            $_btn_3 = $_page_this;
+            $_btn_4 = $_page_this + 1;
+            $_btn_5 = $_page_this + 2;
+            var $_btn_prev = $_page_this - 1;
+            var $_btn_next = $_page_this + 1;
+            $('#b1').text($_btn_1).click(function(){page_href($_btn_1)});
+            $('#b2').text($_btn_2).click(function(){page_href($_btn_2)});
+            $('#b3').text($_btn_3).click(function(){page_href($_btn_3)});
+            $('#b4').text($_btn_4).click(function(){page_href($_btn_4)});
+            $('#b5').text($_btn_5).click(function(){page_href($_btn_5)});
+            $('#bp').click(function(){page_href($_btn_prev)});
+            $('#bn').click(function(){page_href($_btn_next)});
+        } else if ($_temp <= 2) {
+            $_btn_1 = $_page_all - 4;
+            $_btn_2 = $_page_all - 3;
+            $_btn_3 = $_page_all - 2;
+            $_btn_4 = $_page_all - 1;
+            $_btn_5 = $_page_all;
+            var $_btn_prev = $_page_this - 1;
+            $('#b1').text($_btn_1).click(function(){page_href($_btn_1)});
+            $('#b2').text($_btn_2).click(function(){page_href($_btn_2)});
+            $('#b3').text($_btn_3).click(function(){page_href($_btn_3)});
+            $('#b4').text($_btn_4).click(function(){page_href($_btn_4)});
+            $('#b5').text($_btn_5).click(function(){page_href($_btn_5)});
+            $('#bp').click(function(){page_href($_btn_prev)});
+            $('#bn').hide();
+        };
+        $('.paginate_button').each(function () {
+            var $a = parseInt($(this).text());
+            if ($a == $_page_this) {
+                $(this).siblings().children().removeClass('active')
+                $(this).children().addClass('active');
+            }
+        });
+    });
+</script>
+{% if page_all <= 5 %}
+    <div class="card-paging">
+        <ul class="pagination">
+            {% if page_all >= 1 %}
+                <li class="paginate_button "><a onclick="page_href(1)" {% if page_this == 1 %} class="active"{% endif %}>1</a></li>
+            {% endif %}
+            {% if page_all >= 2 %}
+                <li class="paginate_button "><a onclick="page_href(2)" {% if page_this == 2 %} class="active"{% endif %}>2</a></li>
+            {% endif %}
+            {% if page_all >= 3 %}
+                <li class="paginate_button "><a onclick="page_href(3)" {% if page_this == 3 %} class="active"{% endif %}>3</a></li>
+            {% endif %}
+            {% if page_all >= 4 %}
+                <li class="paginate_button "><a onclick="page_href(4)" {% if page_this == 4 %} class="active"{% endif %}>4</a></li>
+            {% endif %}
+            {% if page_all >= 5 %}
+                <li class="paginate_button "><a onclick="page_href(5)" {% if page_this == 5 %} class="active"{% endif %}>5</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% else %}
+    <div class="card-paging">
+        <ul class="pagination">
+            <li class="paginate_button "><a id="bp" class="page_btn"><</a></li>
+            <li class="paginate_button "><a id="b1" class="page_btn">1</a></li>
+            <li class="paginate_button "><a id="b2" class="page_btn">2</a></li>
+            <li class="paginate_button "><a id="b3" class="page_btn">3</a></li>
+            <li class="paginate_button "><a id="b4" class="page_btn">4</a></li>
+            <li class="paginate_button "><a id="b5" class="page_btn">5</a></li>
+            <li class="paginate_button "><a id="bn" class="page_btn">></a></li>
+        </ul>
+    </div>
+{% endif %}

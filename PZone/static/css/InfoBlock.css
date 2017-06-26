@@ -1,0 +1,91 @@
+@charset "utf-8";
+
+/*个人中心 - 个人资料*************************************************************/
+
+.info-container {
+    padding: 60px;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.info-item-box {
+    height: auto;
+    width: 50%;
+    float: left;
+}
+
+.info-item {
+    width: 100%;
+    margin: 3px 0;
+    padding: 10px;
+    float: left;
+}
+
+.info-item label {
+    border: none;
+    width: 100px;
+    padding: 5px 20px;
+    display: inline-block;
+}
+
+.info-item input,
+.info-item textarea {
+    border: none;
+    width: 200px;
+    padding: 5px 20px;
+    border-bottom: 2px solid #CCC;
+    transition: all .4s ease-in-out;
+}
+
+.info-item textarea {
+    padding: 5px;
+    width: 600px;
+}
+
+.info-item input:focus,
+.info-item textarea:focus {
+    border: none;
+    padding: 5px 20px;
+    border-bottom: 2px solid #11c7eb;
+}
+
+.info-item textarea:focus {
+    padding: 5px !important;
+}
+
+#info-item-description {
+    position: relative;
+    top: -80px;
+}
+
+.info-item-img {
+    width: 100%;
+    padding: 10px;
+    float: left;
+    text-align: center;
+}
+
+.info-item-img img {
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+}
+
+.info-item-img-button {
+    padding: 4px;
+    margin: 0 0 20px 0;
+    width: 90px;
+}
+
+.info-item-form-button {
+    padding: 4px;
+    margin: 0 100px 20px 0;
+    width: 90px;
+    float: right;
+}
+
+.info-item-desp {
+    width: 200%;
+}
+
+/*个人中心 - 个人资料   END ***************************************/

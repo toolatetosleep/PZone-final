@@ -1,0 +1,40 @@
+.pop-box {
+	width: 330px;
+	/*height: 275px;*/
+	height: 0;
+	zoom: 1;
+	overflow: hidden;
+	text-align: center;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.pop-box-input {
+	padding: 5px;
+	margin: 10px auto;
+	font-size: 1.4em;
+	display: block;
+}
+
+.pop-box-input2 {
+	padding: 5px 0;
+	margin: 15px auto;
+	display: block;
+	font-size: 1.3em;
+	text-align: center;
+	border: none;
+	border-bottom: 1px solid #CCC;
+	transition: all .2s;
+}
+
+.pop-box-input2:focus {
+	border-bottom: 1px solid #11c7eb;
+}
+
+.pop-box-button {
+	width: 75%;
+}

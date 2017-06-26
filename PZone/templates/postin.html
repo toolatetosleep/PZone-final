@@ -1,0 +1,162 @@
+{% extends 'includes/base.html' %}
+{% block title %}发布 {% endblock %}
+{% block hidden_elements %}
+
+{% endblock %}
+{% block content %}
+    <!--内容-->
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">发布</span>
+                <div class="client-center">
+                    <div class="post-title">
+                        <input id="site_title" type="text" placeholder="请填写您的标题" value=""/>
+                    </div>
+                    <div class="post-editer">
+                        <div id="wang-editer" style="height: 400px;">
+                        </div>
+                    </div>
+                    <div class="post-section">
+                        <div class="post-section-block">
+                            <select name="type" id="st_type">
+                                <option value="1">摄影头条</option>
+                                <option value="3">佳作欣赏</option>
+                                <option value="2">摄影技巧</option>
+                                <option value="4">摄影器材</option>
+                            </select>
+                        </div>
+                        <input type="hidden" name="url" id="purl" value="1">
+                        <div class="post-section-block">
+                            <button id="site_post" class="button post-section-button" type="submit">保存更改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block hidden_script %}
+    <script type="text/javascript">
+        wangEditor.config.printLog = false;
+        var editor = new wangEditor('wang-editer');
+        $(function () {
+            editor.config.menus = [
+                'source',
+                '|',
+                'bold',
+                'underline',
+                'italic',
+                'strikethrough',
+                'eraser',
+                'forecolor',
+                'bgcolor',
+                '|',
+                'quote',
+                'fontfamily',
+                'fontsize',
+                'unorderlist',
+                'orderlist',
+                'alignleft',
+                'aligncenter',
+                'alignright',
+                '|',
+                'link',
+                'unlink',
+                'table',
+                'emotion',
+                '|',
+                'img',
+                '|',
+                'undo',
+                'redo',
+                'fullscreen'
+            ];
+            editor.config.pasteText = true;
+            editor.config.menuFixed = false;
+            editor.config.uploadImgUrl = '{% url 'site_upload' %}';
+            editor.config.uploadImgFileName = 'myPic'
+            editor.config.uploadImgFns.onload = function (resultText, xhr) {
+                var tep = $('#purl').val();
+                if (tep == 1) {
+                    $('#purl').val(resultText);
+                }
+                var originalName = editor.uploadImgOriginalName || '';
+                editor.command(null, 'insertHtml', '</p><div class="inner-image"><img src="' + resultText + '" alt="' + originalName + '" style="max-width:100%;" /></div><p>');
+            };
+            editor.config.uploadParams = {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            };
+            editor.config.emotions = {
+                'default': {
+                    {% load static %}
+                    title: '默认', // 组名称
+                    data: '{% static "emotions.data" %}' // 服务器的一个json文件url，例如官网这里配置的是 http://www.wangeditor.com/wangEditor/test/emotions.data
+                },
+            };
+            editor.create();
+        });
+
+        {% if fun == 1 %}
+            function modifying() {
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: "{% url 'article_modify_json' 1cat 1item %}",
+                    data: {},
+                    async: false,
+                    success: function (data) {
+                        $("#site_title").val(data['a_title']);
+                        editor.$txt.html(data['a_content']);
+                        $("#st_type").val(data['a_cat']).attr("disabled", "disabled");
+                        if (data['a_url'] != "1") {
+                            $('#purl').val(data['a_url']);
+                        }
+                        $modi_set = data['a_id']
+                    }
+                });
+            }
+        {% endif %}
+
+        var $modi_set = 0;
+        $(document).ready(function () {
+            $("#site_post").click(function () {
+                var $_title = $("#site_title").val();
+                var $_content = editor.$txt.html();
+                var $_kind = $("#st_type").val();
+                var $_url = $('#purl').val();
+                $('#wang-editer').find("img").each(function (i) {
+                    if (i == 0) {
+                        $_url = $(this).attr("src");
+                    }
+                });
+                if ($_title.trim().length <= 0) {
+                    var $html = "<div id='mask'><div class='pop-box'><div class='card'>" +
+                            "<div class='card-content'><label class='pop-box-input'>" +
+                            "标题不能为空！</label><button class='button pop-box-button' " +
+                            "style='width: 30%;' onclick='Pop_box_hide()'>确定</button>" +
+                            "</div></div></div></div>";
+                    $('body').prepend($html);
+                    Pop_box_show();
+                    return false;
+                }
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: {% url 'site_posting' %},
+                    data: {
+                        title: $_title, content: $_content,
+                        kind: $_kind, url: $_url, set: $modi_set
+                    },
+                    async: false,
+                    success: function (data) {
+                        window.location = data
+                    }
+                });
+            })
+            {% if fun == 1 %}
+                modifying();
+            {% endif %}
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,496 @@
+@charset "utf-8";
+
+/*Header 设置*************************************************************/
+
+/*Header 设置   END ***************************************/
+
+/*全站 - 通用设置*************************************************************/
+
+/*全站 - 功能性设置*************************************************************/
+
+.red {
+    background-color: #F44336 !important;
+}
+
+.orange {
+    background-color: #ff9800 !important;
+}
+
+.blue {
+    background-color: #2196F3 !important;
+}
+
+.button {
+    padding: 10px;
+    margin: 10px;
+    width: calc(100% - 20px);
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid grey;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #11c7eb;
+    border-color: #0C96B3;
+}
+
+.active {
+    background: rgba(160, 160, 160, 0.2) !important;
+}
+
+.in-disabled {
+    /*cursor: not-allowed;*/
+    color: #CCCCCC !important;
+}
+
+#mask,
+#mask1 {
+    background: rgba(0, 0, 0, .5);
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    position: fixed;
+    display: none;
+}
+
+.hover-button {
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+.hover-button-on {
+    background: #0C96B3;
+    color: #FFF !important;
+}
+
+.hover-button-off {
+    background: transparent;
+    color: #0C96B3 !important;
+}
+
+/*全站 - 功能性设置   END ***************************************/
+
+/*Header 设置*************************************************************/
+
+.nav {
+    height: inherit;
+    border-radius: 3px;
+}
+
+.nav ul {
+    text-align: center;
+    vertical-align: middle;
+    list-style-type: none;
+    margin: 0 10px;
+    height: inherit;
+    display: inline-block;
+}
+
+.li-left {
+    float: left;
+}
+
+.li-right {
+    float: right;
+}
+
+.ul-left {
+    padding: 5px 20px 5px 0;
+    float: left;
+}
+
+.ul-right {
+    padding: 5px 20px;
+    float: right;
+}
+
+.nav ul li::after {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 50px;
+    content: "  ";
+    border-bottom: 1px solid black;
+}
+
+.nav ul li a,
+.nav ul form input {
+    text-decoration: none;
+    padding: 5px 20px;
+    margin: 5px 10px;
+    color: #333;
+    display: inline-block;
+}
+
+#index-title {
+    float: left;
+    font-size: 1.7em;
+    color: #333;
+    padding: 5px 0 5px 20px;
+    margin: 4px 0 4px 10px;
+    display: inline-block;
+}
+
+.bar1 {
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    position: relative;
+    background-color: #F06292;
+    transition: box-shadow .25s;
+    border-radius: 2px;
+    height: 4px;
+    width: 0;
+}
+
+.card-panel,
+.card,
+nav,
+footer {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+/*Header 设置   END ***************************************/
+
+/*Cards 设置*************************************************************/
+
+.card {
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    position: relative;
+    margin: 0.5rem 0 1rem 0;
+    background-color: #fff;
+    transition: box-shadow .25s;
+    border-radius: 2px;
+}
+
+.card .card-content {
+    padding: 20px;
+    border-radius: 0 0 2px 2px;
+}
+
+.card .card-content .card-title {
+    line-height: 48px;
+}
+
+.card .card-title {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.card .card-content p {
+    margin: 0;
+    color: inherit;
+}
+
+.card .card-image {
+    position: relative;
+    overflow: hidden;
+    max-height: 422px;
+}
+
+.card .card-action {
+    position: relative;
+    background-color: inherit;
+    border-top: 1px solid rgba(160, 160, 160, 0.2);
+    padding: 20px;
+    text-align: right;
+}
+
+.card .card-image img {
+    display: block;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
+    color: #0C96B3;
+    margin-right: 20px;
+    transition: color .3s ease;
+    text-decoration: none;
+}
+
+.card .card-content p a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.card-li {
+    position: relative;
+    background-color: inherit;
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    border-bottom: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 10px 20px;
+}
+
+.card-li:last-child {
+    border: 1px solid rgba(160, 160, 160, 0.2);
+}
+
+.card-li:hover {
+    background-color: #F5F5F5;
+}
+
+.card-title-a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card-li-links {
+    color: inherit !important;
+}
+
+.card-paging {
+    padding: 20px;
+    text-align: center;
+    border-radius: 0 0 2px 2px;
+    border-top: 1px solid rgba(160, 160, 160, 0.2);
+}
+
+/*Cards 设置   END ***************************************/
+
+/*首页的个人信息 设置*************************************************************/
+
+.portrait {
+    margin: 0;
+    padding: 0;
+    height: 130px;
+    /*padding-left: 110px;*/
+    text-align: center;
+}
+
+.portrait > img {
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    border: 1px #ccc solid;
+}
+
+.peronal-info {
+    height: 130px;
+    padding: 20px;
+    /*padding-left: 90px;*/
+    text-align: center;
+}
+
+a.p-info-link {
+    text-decoration: none;
+    color: #0C96B3;
+    font-size: 1.1em;
+    padding: 5px 10px;
+    display: inline-block;
+    width: 120px;
+}
+
+/*首页的个人信息 设置   END ***************************************/
+
+/*首页的侧边 设置*************************************************************/
+
+span.badge.new {
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #0C96B3;
+    border-radius: 2px;
+}
+
+span.badge {
+    min-width: 3rem;
+    padding: 0 6px;
+    margin-left: 14px;
+    text-align: center;
+    font-size: 1rem;
+    line-height: inherit;
+    color: #757575;
+    float: right;
+    box-sizing: border-box;
+}
+
+/*首页的侧边 设置   END ***************************************/
+
+/*用户中心首页 设置*************************************************************/
+
+.client-center {
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    position: relative;
+    margin: 0.5rem 0 1rem 0;
+    background-color: #fff;
+    border-radius: 2px;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.center-left {
+    width: 20%;
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    float: left;
+}
+
+.center-right {
+    width: 80%;
+    min-height: 500px;
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    border-left: none;
+    float: left;
+}
+
+.center-li:hover {
+    background: #F5F5F5;
+}
+
+.center-li {
+    padding: 13px;
+    text-align: center;
+}
+
+.center-li a {
+    font-size: 1.2em;
+    text-decoration: none;
+    color: #0C96B3;
+}
+
+.center-top {
+    height: 180px;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.center-top-pt {
+    width: 20%;
+    height: inherit;
+    /*border: 1px solid rgba(160, 160, 160, 0.2);*/
+    float: left;
+    text-align: center;
+    padding: 25px 0;
+}
+
+.center-top-pt img {
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+}
+
+.center-top-dt {
+    width: 80%;
+    height: inherit;
+    /*border: 1px solid rgba(160, 160, 160, 0.2);*/
+    float: left;
+}
+
+.center-top-uname {
+    display: inline-block;
+    font-size: 27px;
+    font-weight: 300;
+    margin: 40px 0 0 20px !important;
+}
+
+.center-top-uid {
+    display: inline-block;
+    margin: 20px 0 0 20px !important;
+    color: #CCCCCC !important;
+}
+
+.center-top-ucredit {
+    display: inline-block;
+    margin: 20px 0 0 0 !important;
+}
+
+.center-top-sg {
+    display: inline-block;
+    font-weight: 300;
+    margin: 20px 0 0 25px !important;
+    color: #0C96B3;
+    text-decoration: none;
+}
+
+.center-top-desp {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 300;
+    margin: 20px 0 0 25px !important;
+    text-indent: 2em;
+}
+
+/*用户中心首页 设置   END ***************************************/
+
+/*文章详情页  设置*************************************************************/
+
+.inner-image {
+    padding: 10px 5px;
+}
+
+.inner-image img {
+    display: block;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    max-width: 100%;
+}
+
+/*.inner-image::after {*/
+/*content: "DOWNLOAD";*/
+/*position: relative;*/
+/*top: -30px;*/
+/*cursor: pointer;*/
+/*background: rgba(255, 255, 255, 0.8);*/
+/*}*/
+
+.ul-Breadcrumbs {
+    color: #888;
+}
+
+.ul-Breadcrumbs > li + li:before {
+    color: #CCCCCC;
+    content: "/";
+    padding: 0 8px;
+}
+
+.give-com {
+    overflow: hidden;
+    zoom: 1;
+}
+
+.give-com-left {
+    width: 20%;
+    float: left;
+    position: relative;
+    top: 18px;
+}
+
+.give-com-left img {
+    border-radius: 50%;
+}
+
+.give-com-right {
+    width: 80%;
+    float: left;
+}
+
+.give-com-button {
+    padding: 4px;
+    margin: 0 0 20px 0;
+    width: 90px;
+    float: right;
+}
+
+.com-paging {
+    padding: 10px 20px !important;
+    border: none !important;
+}
+
+/*文章详情页 设置   END ***************************************/
+
+/*全站 - 通用设置   END ***************************************/

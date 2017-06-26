@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}标题{% endblock %} | PZone摄影社区 | 享你所想，分享你的每一份好作品！</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Base.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/BasicBlock.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Pagination.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Animation.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ComBlock.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/InfoBlock.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/PostBlock.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/PopBox.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wangEditor.min.css' %}"/>
+    <link rel="shortcut icon" href="{% static "pzone.ico" %}" type="image/x-icon">
+    <script src="{% static 'js/jquery-2.1.0.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/jquery.form.min.js' %}" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+{% block hidden_elements %}
+    <div id="mask1">
+        <!--<div class="loader-inner square-spin myloader">
+            <div></div>
+        </div>-->
+        <div class="pop-box">
+            <div class="card">
+                <div class="card-content">
+                    <form action="{% url 'site_login' request.path %}" method="post">
+                        {% csrf_token %}
+                        <label class="pop-box-input">注册 / 登陆</label>
+                        <input type="text" class="pop-box-input2" name="username" placeholder="用 户 名" value=""/>
+                        <input type="password" class="pop-box-input2" name="password" placeholder="密      码" value=""/>
+                        <button type="submit" class="button pop-box-button">确定</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<div class="wrapper">
+    {% include 'includes/header.html' %}
+    {% block content %}内容{% endblock %}
+    {% include 'includes/footer.html' %}
+</div>
+</body>
+<script src="{% static 'js/init.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'js/Function.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'js/wangEditor.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script>
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
+    });
+</script>
+{% block hidden_script %}
+    <script type="text/javascript">
+        wangEditor.config.printLog = false;
+        var editor = new wangEditor('wang-editer');
+        $(function () {
+            editor.config.menus = [
+                'emotion',
+                'bold',
+                'undo'
+            ];
+            editor.config.pasteText = true;
+            editor.config.menuFixed = false;
+            editor.config.emotions = {
+                'default': {
+                    {% load static %}
+                    title: '默认', // 组名称
+                    data: '{% static "emotions.data" %}'
+                }
+            };
+            editor.onchange = function () {
+                if (editor.$txt.formatText().length == 0) {
+                    $_com_id = 0;
+                    reset();
+                }
+            };
+            editor.create();
+            {% if username == None %}
+                editor.disable();
+            {% endif %}
+        });
+    </script>
+{% endblock %}
+</html>

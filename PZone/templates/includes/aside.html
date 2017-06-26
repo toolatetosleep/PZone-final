@@ -1,0 +1,125 @@
+<aside>
+    <div class="card">
+        <div class="card-content">
+            <p>2017 吴梓兵毕业设计作品：原创摄影社区的设计与实现</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">用户中心</span>
+            {% if username == None %}
+                <button onclick="Pop_box_show1()" class="button">登陆 / 注册</button>
+            {% else %}
+                <div class="portrait">
+                    <img src="{{ u.ava }}"/>
+                </div>
+                <input id="user_id" type="hidden" value="{{ u.uid }}">
+                <div class="peronal-info">
+                    <a href="{% url 'user_index' %}" class="p-info-link" style="width: 300px;">{{ username }}</a>
+                    <br/>
+                    <a href="{% url 'user_index' %}" class="p-info-link">个人中心</a>
+                    {% if u.msg == 0 %}
+                        <a href="{% url 'user_message' %}" class="p-info-link">我的消息</a>
+                    {% else %}
+                        <a href="{% url 'user_message' %}" class="p-info-link">我的消息({{ u.msg }})</a>
+                    {% endif %}
+                    <br/>
+                    <a href="{% url 'site_post' %}" class="p-info-link">我要发布</a>
+                    <a href="{% url 'site_logout' request.path %}"
+                       class="p-info-link">登&nbsp;&nbsp;出&nbsp;&nbsp;>></a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">全站最热</span>
+            {% for foo in obj_hot %}
+                <div class="card-li">
+                    <p>
+                        <a class="card-li-links" href="
+                            {% if foo.cat == 1 %}
+                                {% url 'topic_detail' foo.id %}
+                            {% elif foo.cat == 2 %}
+                                {% url 'skill_detail' foo.id %}
+                            {% elif foo.cat == 3 %}
+                                {% url 'picture_detail' foo.id %}
+                            {% elif foo.cat == 4 %}
+                                {% url 'equipment_detail' foo.id %}
+                            {% endif %}
+                        " title="{{ foo.title }}">{{ foo.title|truncatechars:25 }}</a>
+                        {% if forloop.counter == 1 %}
+                            <span class="new badge red">1</span>
+                        {% elif forloop.counter == 2 %}
+                            <span class="new badge orange">2</span>
+                        {% elif forloop.counter == 3 %}
+                            <span class="new badge blue">3</span>
+                        {% else %}
+                            <span class="new badge">{{ forloop.counter }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">随机阅读</span>
+            {% for foo in obj_new %}
+                <div class="card-li">
+                    <p>
+                        <a class="card-li-links" href="
+                            {% if foo.cat == 1 %}
+                                {% url 'topic_detail' foo.id %}
+                            {% elif foo.cat == 2 %}
+                                {% url 'skill_detail' foo.id %}
+                            {% elif foo.cat == 3 %}
+                                {% url 'picture_detail' foo.id %}
+                            {% elif foo.cat == 4 %}
+                                {% url 'equipment_detail' foo.id %}
+                            {% endif %}
+                        " title="{{ foo.title }}">{{ foo.title|truncatechars:25 }}</a>
+                        {% if forloop.counter == 1 %}
+                            <span class="new badge red">1</span>
+                        {% elif forloop.counter == 2 %}
+                            <span class="new badge orange">2</span>
+                        {% elif forloop.counter == 3 %}
+                            <span class="new badge blue">3</span>
+                        {% else %}
+                            <span class="new badge">{{ forloop.counter }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</aside>
+<script>
+    $(document).ready(function () {
+        reajust();
+    });
+    // aside 的动态效果 奇怪的BUG
+    function reajust() {
+        $(window).scroll(function () {
+            var st = $(this).scrollTop();//大
+            var st2 = st - 60;//小
+            var asd = $('aside');
+            if (st2 >= $_aside) {
+                if (asd.offset().top < $_aside) {
+                    asd.children().hide();
+                    asd.css("top", st2);
+                    asd.children().first().fadeIn(500);
+                    asd.children().first().next().fadeIn(500);
+                }
+                asd.css("top", st2);
+            } else {
+                if (asd.offset().top > $_aside) {
+                    asd.children().last().slideDown(500).prev().slideDown(500);
+                    asd.animate({
+                        top: 0
+                    }, 300);
+                }
+            }
+        });
+    }
+</script>

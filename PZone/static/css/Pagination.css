@@ -1,0 +1,64 @@
+@charset "utf-8";
+
+/*分页按钮相关*************************************************************/
+
+.pagination {
+	display: inline-block;
+	text-align: right;
+	margin: 10px 0;
+	border-radius: 4px;
+}
+
+ul:not(.browser-default) {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+.pagination>li {
+	display: inline;
+}
+
+.pagination li {
+	display: inline-block;
+	border-radius: 2px;
+	text-align: center;
+	vertical-align: top;
+	height: 32px;
+	width: 32px;
+}
+
+.pagination li a:hover {
+	border-radius: 50%;
+	background: #11c7eb;
+	color: #fff;
+}
+
+.pagination>li>a,
+.pagination>li>span {
+	position: relative;
+	float: left;
+	padding: 6px 12px;
+	margin-left: -1px;
+	line-height: 1.42857143;
+	color: #337ab7;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 50%;
+	height: 32px;
+	width: 32px;
+	transition: all .3s ease-in-out;
+}
+
+.pagination li a {
+	color: #444;
+	display: inline-block;
+	font-size: 1.1em;
+	padding: 0;
+	text-align: center;
+	line-height: 30px;
+	cursor: pointer;
+}
+
+
+/*分页按钮相关   END ***************************************/
